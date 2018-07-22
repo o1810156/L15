@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>puzzle</title>
+    <style>
+        body {
+            text-align: center;
+            background-color: #1c2129;
+            color: white;
+        }
+    
+        table {
+            margin: auto;
+        }
+    
+        table, td, th {
+            border: 1px white solid;
+        }
+    
+        table.game td {
+            width: 10vh;
+            height: 10vh;
+            background-color: rgba(0,0,0,0);
+            transition: background-color 250ms ease 0s;
+        }
+    
+        table.game td.checked {
+            background-color: rgba(255,255,255,1);
+        }
+        </style>
+</head>
+<body>
+    <h1>全部埋めげ～む</h1>
+    <p>クリックしてすべてのマスを塗りつぶしてください。</p>
+    <table class="game">
+        <tr><td id="m1" data-checked="no"></td><td id="m2" data-checked="no"></td><td id="m3" data-checked="yes" class="checked"></td></tr>
+        <tr><td id="m4" data-checked="no"></td><td id="m5" data-checked="no"></td><td id="m6" data-checked="no"></td></tr>
+        <tr><td id="m7" data-checked="no"></td><td id="m8" data-checked="yes" class="checked"></td><td id="m9" data-checked="no"></td></tr>
+    </table>
+    <script>
+    addEventListener("load", function(){
+        let tds = [];
+        let targets = [[1,2,4],[1,2,3,5],[2,3,6]
+                      ,[1,4,5,7],[2,4,5,6,8],[3,5,6,9]
+                      ,[4,7,8],[5,7,8,9],[6,8,9]];
+        for(let i=1;i<=9;i++) tds.push(document.getElementById("m"+i));
+        tds.forEach(function(e){
+            e.addEventListener("click", function(){
+                let n = parseInt(e.getAttribute("id")[1]);
+                targets[n-1].forEach(function(t){
+                    toggleChecked(document.getElementById("m"+t));
+                });
+                for(let i=0;i<9;i++){
+                    if(tds[i].getAttribute("data-checked") == "no") return;
+                }
+                setTimeout(function(){
+                    alert("You Win !!");
+                    location.reload();
+                }, 500);
+            },false);
+        });
+    }, false);
+
+    function toggleChecked(e){
+        e.classList.toggle("checked");
+        let v = e.getAttribute("data-checked") == "yes" ? "no" : "yes";
+        e.setAttribute("data-checked",v);
+    }
+    </script>
+</body>
+</html>
